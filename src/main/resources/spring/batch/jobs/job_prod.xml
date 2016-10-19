@@ -1,0 +1,41 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.2.xsd
+	">
+
+	<context:component-scan base-package="com.cn2" />
+
+
+	<bean id="submissionDetailRunScheduler" class="com.cn2.SubmissionDetailRunProdScheduler" />
+	
+	<bean id="leadRunScheduler" class="com.cn2.LeadRunProdScheduler" />
+	
+	<bean id="consumerRequestRunScheduler" class="com.cn2.ConsumerRequestRunProdScheduler" />
+
+	<!-- Run every 5 seconds -->
+	<task:scheduled-tasks>
+		<!-- Run every 5 mins  -->
+		<task:scheduled ref="submissionDetailRunScheduler" method="run"
+			fixed-rate="300000"  />
+			
+		<!-- Run every 30 mins  -->
+		<task:scheduled ref="leadRunScheduler" method="run"
+			fixed-rate="1800000" />	
+			
+		<!-- Run every 30 mins  -->	
+		<task:scheduled ref="consumerRequestRunScheduler" method="run"
+			fixed-rate="1800000" />	
+			
+	</task:scheduled-tasks>
+
+
+</beans>
